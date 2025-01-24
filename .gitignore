@@ -247,3 +247,4 @@ nbdist/
 
 ## User settings
 xcuserdata/
+/.env
