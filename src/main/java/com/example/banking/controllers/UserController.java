@@ -29,7 +29,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/v1/users")
 @Tag(name = "User Management", description = "APIs for managing user operations")
 @SecurityRequirement(name = "bearerAuth")
 public class UserController {
@@ -41,7 +41,7 @@ public class UserController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "201", description = "User created successfully", content = @Content(schema = @Schema(implementation = UserDTO.class))),
 			@ApiResponse(responseCode = "400", description = "Invalid input data"),
-			@ApiResponse(responseCode = "403", description = "Insufficient permissions") })
+			@ApiResponse(responseCode = "403", description = "Insufficient permissions")})
 	@PostMapping
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<UserDTO> createUser(
@@ -54,7 +54,7 @@ public class UserController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "User found", content = @Content(schema = @Schema(implementation = UserDTO.class))),
 			@ApiResponse(responseCode = "404", description = "User not found"),
-			@ApiResponse(responseCode = "403", description = "Insufficient permissions") })
+			@ApiResponse(responseCode = "403", description = "Insufficient permissions")})
 	@GetMapping("/{userId}")
 	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 	public ResponseEntity<UserDTO> getUserById(
@@ -64,8 +64,9 @@ public class UserController {
 	}
 
 	@Operation(summary = "Get all users", description = "Retrieves all users with pagination. Requires ADMIN role.")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of users retrieved successfully"),
-			@ApiResponse(responseCode = "403", description = "Insufficient permissions") })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "List of users retrieved successfully"),
+			@ApiResponse(responseCode = "403", description = "Insufficient permissions")})
 	@GetMapping
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Page<UserDTO>> getAllUsers(
@@ -79,7 +80,7 @@ public class UserController {
 			@ApiResponse(responseCode = "200", description = "User updated successfully", content = @Content(schema = @Schema(implementation = UserDTO.class))),
 			@ApiResponse(responseCode = "400", description = "Invalid input data"),
 			@ApiResponse(responseCode = "404", description = "User not found"),
-			@ApiResponse(responseCode = "403", description = "Insufficient permissions") })
+			@ApiResponse(responseCode = "403", description = "Insufficient permissions")})
 	@PutMapping("/{userId}")
 	@PreAuthorize("hasRole('ADMIN') or @userSecurity.isCurrentUser(#userId)")
 	public ResponseEntity<UserDTO> updateUser(
@@ -90,9 +91,10 @@ public class UserController {
 	}
 
 	@Operation(summary = "Delete user", description = "Deletes a user by their ID. Requires ADMIN role.")
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "User deleted successfully"),
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "204", description = "User deleted successfully"),
 			@ApiResponse(responseCode = "404", description = "User not found"),
-			@ApiResponse(responseCode = "403", description = "Insufficient permissions") })
+			@ApiResponse(responseCode = "403", description = "Insufficient permissions")})
 	@DeleteMapping("/{userId}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Void> deleteUser(
@@ -105,7 +107,7 @@ public class UserController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "User found", content = @Content(schema = @Schema(implementation = UserDTO.class))),
 			@ApiResponse(responseCode = "404", description = "User not found"),
-			@ApiResponse(responseCode = "403", description = "Insufficient permissions") })
+			@ApiResponse(responseCode = "403", description = "Insufficient permissions")})
 	@GetMapping("/email/{email}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<UserDTO> getUserByEmail(
